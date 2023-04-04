@@ -1,0 +1,6 @@
+- name: Reboot the host after kernel installation
+  reboot:
+    reboot_timeout: 3600
+#    pre_reboot_delay: 60
+  tags:
+    - reboot

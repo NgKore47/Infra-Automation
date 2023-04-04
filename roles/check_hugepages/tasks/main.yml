@@ -1,0 +1,14 @@
+- name: Memory Check
+  fail:
+    msg:
+      - trying to allocate {{ ((hugepages_2MB|int * 2) + (hugepages_1GB|int * 1024)) }} MiB of
+      - memory only {{ ansible_memtotal_mb }} MiB available
+  when: ansible_memtotal_mb < ((hugepages_2MB|int * 2) + (hugepages_1GB|int * 1024))
+  tags:
+     - check_mem
+
+- name: Memory Check Success
+  debug:
+    msg: Memory Check is good
+  tags:
+     - check_mem

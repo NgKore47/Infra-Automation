@@ -1,0 +1,24 @@
+- name: Install required packages for download and unzip
+  apt:
+    name:
+      - git
+      - unzip
+    state: present
+
+- name: Download ZIP file from GitHub
+  get_url:
+    url: https://github.com/ShubhamTatvamasi/magma-galaxy/archive/refs/heads/main.zip
+    dest: /tmp/magma-galaxy-main.zip
+    mode: '0644'
+
+- name: Unpack ZIP file to home directory
+  unarchive:
+    src: /tmp/magma-galaxy-main.zip
+    dest: /home/{{ ansible_user }}
+    remote_src: yes
+    creates: /home/{{ ansible_user }}/magma-galaxy-main
+
+- name: Remove temporary ZIP file
+  file:
+    path: /tmp/magma-galaxy-main.zip
+    state: absent

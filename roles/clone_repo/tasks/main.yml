@@ -1,0 +1,8 @@
+---
+- name: Clone repository to the home directory
+  git:
+    repo: https://gerrit.opencord.org/aether-in-a-box
+    dest: "/home/ubuntu/aether"
+    update: yes
+    accept_hostkey: yes
+  become: false

@@ -1,0 +1,77 @@
+- name: update package manager cache
+  tags:
+     - cache_update
+  package:
+     update_cache: yes
+
+- name: install build-essential
+  package:
+     name: build-essential
+     state: present
+  tags: install_pkgs
+
+- name: install libbsd-dev
+  package:
+     name: libbsd-dev
+     state: present
+  tags: install_pkgs
+
+- name: install libelf-dev
+  package:
+     name: libelf-dev
+     state: present
+  tags: install_pkgs
+
+- name: install libjson-c-dev
+  package:
+     name: libjson-c-dev
+     state: present
+  tags: install_pkgs
+
+- name: install libnuma-dev
+  package:
+     name: libnuma-dev
+     state: present
+  tags: install_pkgs
+
+- name: install libpcap-dev
+  package:
+     name: libpcap-dev
+     state: present
+  tags: install_pkgs
+
+- name: install meson
+  package:
+     name: meson
+     state: present
+  tags: install_pkgs
+
+- name: install pkg-config
+  package:
+     name: pkg-config
+     state: present
+  tags: install_pkgs
+
+- name: install doxygen
+  package:
+     name: doxygen
+     state: present
+  tags: install_pkgs
+
+- name: install python3-sphinx
+  package:
+     name: python3-sphinx
+     state: present
+  tags: install_pkgs
+
+- name: install libnl-3-dev
+  package:
+     name: libnl-3-dev
+     state: present
+  tags: install_pkgs
+
+- name: install libnl-cli-3-dev
+  package:
+     name: libnl-cli-3-dev
+     state: present
+  tags: install_pkgs

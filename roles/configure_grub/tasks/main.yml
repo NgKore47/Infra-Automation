@@ -1,0 +1,13 @@
+- name: Set IOMMU and IOMMU PT in GRUB config
+  lineinfile:
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash iommu=on iommu=pt"'
+  notify: update grub
+
+- name: Create handler to update GRUB
+  meta: flush_handlers
+
+handlers:
+  - name: update grub
+    command: update-grub

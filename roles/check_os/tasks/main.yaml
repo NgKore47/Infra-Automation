@@ -1,0 +1,13 @@
+- name: Distribution Check
+  fail:
+    msg: requires {{ required_dist }} {{ dist_ver }}
+  when: (ansible_distribution != required_dist) or
+        (ansible_distribution_version is version (dist_ver, '<'))
+  tags:
+     - check_os
+
+- name: Distribution Check
+  debug:
+    msg: Distribution is good
+  tags:
+     - check_os
