@@ -7,7 +7,7 @@
 
 - name: Download ZIP file from GitHub
   get_url:
-    url: https://github.com/ShubhamTatvamasi/magma-galaxy/archive/refs/heads/main.zip
+    url: https://github.com/.....main.zip
     dest: /tmp/magma-galaxy-main.zip
     mode: '0644'
 

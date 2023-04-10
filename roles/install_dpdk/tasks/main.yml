@@ -1,0 +1,64 @@
+- name: install packages
+  package:
+     name:
+     - meson
+     - python3-pyelftools
+     - libnuma-dev
+     - libipsec-mb-dev
+     - libbpf-dev
+     - pkgconf
+     - libfdt-dev
+     - libisal-dev
+     - build-essential
+     - libpcap-dev
+     - libssl-dev
+     - libmnl-dev
+     - ethtool
+     state: present
+  tags: install_dpdk
+
+- name: Download and extract DPDK source
+  get_url:
+    url: "http://fast.dpdk.org/rel/dpdk-{{ dpdk_version }}.tar.xz"
+    dest: /tmp/dpdk-{{ dpdk_version }}.tar.xz
+    mode: 0644
+  register: dpdk_download
+  until: dpdk_download is succeeded
+
+- name: Create DPDK installation directory
+  file:
+    path: "{{ dpdk_install_path }}"
+    state: directory
+  become: true
+
+- name: Extract DPDK source
+  unarchive:
+    src: "/tmp/dpdk-{{ dpdk_version }}.tar.xz"
+    dest: "{{ dpdk_install_path }}"
+    copy: no
+    extra_opts: ["--strip-components=1"]
+  become: true
+
+- name: Build libraries, drivers and test applications.
+  shell: "meson -Dexamples=all build"
+  args:
+    chdir: "{{ dpdk_install_path }}"
+  become: true
+
+- name: Ninja Build
+  shell: "ninja -C build"
+  args:
+    chdir: "{{ dpdk_install_path }}"
+  become: true
+
+- name: Install Dpdk related files
+  shell: "ninja install"
+  args:
+    chdir: "{{ dpdk_install_path }}/build"
+  become: true
+
+- name: Configure
+  shell: "ldconfig"
+  args:
+    chdir: "{{ dpdk_install_path }}/build"
+  become: true

@@ -11,6 +11,7 @@
     - role: common
     - role: setup_hugepages
     - role: install_libbpf
+    - role: install_dpdk
     - role: clone_repo
     - role: restart
 
