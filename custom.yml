@@ -9,3 +9,4 @@
   roles:
     - role: check_os
     - role: install_dpdk
+    - role: sudoer

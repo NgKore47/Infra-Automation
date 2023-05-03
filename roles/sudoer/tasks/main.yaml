@@ -1,0 +1,14 @@
+- name: "super user without password"
+  blockinfile:
+    path: /etc/sudoers
+    insertafter: 'root\s+ALL=\(ALL:ALL\) ALL'
+    block: |
+      {{ ansible_user }} ALL=(ALL) NOPASSWD: ALL
+    marker: "# {mark} ANSIBLE MANAGED BLOCK master-user"
+    validate: 'visudo -cf %s'
+    state: present
+    backup: yes
+
+- name: "sudoer file changed"
+  debug:
+    msg: sudoer file changed
