@@ -15,6 +15,13 @@ proxy_env:
 min_kernel: "5.10"
 installed_kernel: "5.13"
 
+########################
+# RealTime-kernel vars #
+########################
+kernel_version: 5.4.143
+rtk_patch_link: https://mirrors.edge.kernel.org/pub/linux/kernel/projects/rt/5.4/older/patch-5.4.143-rt64.patch.xz
+kernel_link: https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.143.tar.xz
+
 # Edit the variables below to your preference
 num_threads: "{{ ansible_processor_vcpus }}"
 
