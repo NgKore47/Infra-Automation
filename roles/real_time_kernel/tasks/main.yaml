@@ -1,0 +1,61 @@
+- name: install packages
+  package:
+     name:
+     - build-essential
+     - git
+     - libssl-dev
+     - libelf-dev
+     - flex
+     - bison
+     state: present
+
+- name: Download kernel
+  get_url:
+    url: "{{ kernel_link }}"
+    dest: "/tmp/linux-5.4.143.tar.xz"
+  register: download_kernel
+
+- name: Download patch
+  get_url:
+    url: "{{ rtk_patch_link }}"
+    dest: "/tmp/patch-5.4.143-rt64-rc2.patch.xz"
+  register: download_patch
+
+- name: Install tar command
+  apt:
+    name: tar
+    state: present
+
+- name: Extract kernel tarball
+  command: tar -xf /tmp/linux-5.4.143.tar.xz -C /tmp
+
+- name: Apply patches
+  command: "xzcat /tmp/patch-5.4.143-rt64-rc2.patch.xz | patch -p1"
+  args:
+    chdir: "/tmp/linux-{{ kernel_version }}"
+
+- name: Copy config file
+  command: "cp /boot/config-{{ ansible_kernel }} .config"
+  args:
+    chdir: "/tmp/linux-{{ kernel_version }}"
+
+- name: Configure kernel
+  command: "make oldconfig"
+  args:
+    chdir: "/tmp/linux-{{ kernel_version }}"
+
+- name: Edit config file
+  replace:
+    path: "/tmp/linux-{{ kernel_version }}/.config"
+    regexp: "^CONFIG_SYSTEM_TRUSTED_KEYS=.*$"
+    replace: "CONFIG_SYSTEM_TRUSTED_KEYS=\"\""
+
+- name: Build kernel
+  command: "make -j8 deb-pkg"
+  args:
+    chdir: "/tmp/linux-{{ kernel_version }}"
+
+- name: Install kernel packages
+  command: "sudo dpkg -i ../linux-headers-{{ kernel_version }}-rt64-rc2_{{ kernel_version }}-rt64-rc2-1_amd64.deb ../linux-image-{{ kernel_version }}-rt64-rc2_{{ kernel_version }}-rt64-rc2-1_amd64.deb ../linux-libc-dev_{{ kernel_version }}-rt64-rc2-1_amd64.deb"
+  args:
+    chdir: "/tmp/linux-{{ kernel_version }}"
